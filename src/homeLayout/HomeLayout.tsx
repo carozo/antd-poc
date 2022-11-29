@@ -2,6 +2,7 @@ import React from 'react';
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import { AutoComplete, Input, MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu } from 'antd';
+import { CityInformation } from '../cityInformation/CityInformation';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -25,7 +26,7 @@ const sideBarOptions: MenuProps['items'] = [
 
 export const HomeLayout: React.FC = () => (
   <Layout style={{ height: '100vh' }}>
-    <Header className="header" style={{ display: 'flex', flexDirection: 'row', color: 'black', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#acc1ed', fontSize: 'x-large' }}>
+    <Header className="header">
       Cities
       <AutoComplete
         dropdownMatchSelectWidth={252}
@@ -37,7 +38,7 @@ export const HomeLayout: React.FC = () => (
         <Input.Search size="large" placeholder="input here" enterButton />
       </AutoComplete>    
     </Header>
-    <Content style={{ padding: '0 50px' }}>
+    <Content style={{ padding: '0 30px' }}>
       <Breadcrumb style={{ margin: '16px 0' }}>
         <Breadcrumb.Item>Home</Breadcrumb.Item>
         <Breadcrumb.Item>List</Breadcrumb.Item>
@@ -52,7 +53,9 @@ export const HomeLayout: React.FC = () => (
             items={sideBarOptions}
           />
         </Sider>
-        <Content style={{ padding: '0 24px', minHeight: 280 }}>Content</Content>
+        <Content style={{ padding: '0 24px', minHeight: 280 }}>
+          <CityInformation />
+        </Content>
       </Layout>
     </Content>
     <Footer style={{ textAlign: 'center' }}>©2020 Created by BCS</Footer>
