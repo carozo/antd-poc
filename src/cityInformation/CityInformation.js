@@ -50,3 +50,41 @@ export const CityInformation = () => {
 }
 
 export default CityInformation;
+
+export const HotelInfo = () => {
+  const getHotels = async () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': '1a7f4089c7msh02e05f170f224f1p1bf205jsna77ef02288d3',
+        'X-RapidAPI-Host': 'hotels4.p.rapidapi.com'
+      }
+    };
+
+    fetch('https://hotels4.p.rapidapi.com/locations/v2/search?query=new%20york&locale=en_US&currency=USD', options)
+      .then(response => response.json())
+      .then(response => console.log(response))
+      .catch(err => console.error(err));
+
+  };
+  useEffect(() => {
+    getHotels();
+  }, []);
+  return (
+    <div>
+      <label style={{ fontSize: "30px" }}>Montevideo</label>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginTop: "10px",
+        }}
+      >
+        {[].map((forecast) => (
+          <Card title={"a"} style={{ width: 300 }} key={1}></Card>
+        ))}
+      </div>
+    </div>
+  );
+};
