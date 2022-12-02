@@ -1,31 +1,37 @@
 import React, { useState } from 'react';
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
+import { NotificationOutlined, EnvironmentOutlined, PictureOutlined, AntCloudOutlined } from '@ant-design/icons';
 import { AutoComplete, Button, Input, MenuProps, Space } from 'antd';
-import { Breadcrumb, Layout, Menu } from 'antd';
+import { Layout, Menu } from 'antd';
 import { CityInformation } from '../cityInformation/CityInformation';
 
 const { Header, Content, Footer, Sider } = Layout;
 
 const sideBarOptions: MenuProps['items'] = [
   {
-    key: `sub${1}`,
-    icon: React.createElement(UserOutlined),
+    key: `images`,
+    icon: React.createElement(PictureOutlined),
+    label: `Images`,
+  },
+  {
+    key: `weather`,
+    icon: React.createElement(AntCloudOutlined),
     label: `Weather`,
   },
   {
-    key: `sub${2}`,
-    icon: React.createElement(LaptopOutlined),
+    key: `events`,
+    icon: React.createElement(NotificationOutlined),
     label: `Events`,
   },
   {
-    key: `sub${3}`,
-    icon: React.createElement(NotificationOutlined),
+    key: `places`,
+    icon: React.createElement(EnvironmentOutlined),
     label: `Places`,
   },
 ];
 
 export const HomeLayout = () => {
-  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedCity, setSelectedCity] = useState('Montevideo');
+  const [selectedMenu, setSelectedMenu] = useState('weather');
 
   return (
     <Layout style={{ height: '100vh' }}>
@@ -42,29 +48,25 @@ export const HomeLayout = () => {
         </AutoComplete>    
       </Header>
       <Content style={{ padding: '0 30px' }}>
-        <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>City Name</Breadcrumb.Item>
-        </Breadcrumb>
+        <Space wrap style={{ marginBottom: '20px' }}>
+          <Button type="primary" onClick={() => setSelectedCity('Montevideo')}>Montevideo</Button>
+          <Button type="primary" onClick={() => setSelectedCity('Madrid')}>Madrid</Button>
+          <Button type="primary" onClick={() => setSelectedCity('Roma')}>Roma</Button>
+          <Button type="primary" onClick={() => setSelectedCity('Amsterdam')}>Amsterdam</Button>
+          <Button type="primary" onClick={() => setSelectedCity('Nueva York')}>Nueva York</Button>
+        </Space>
         <Layout className="site-layout-background" style={{ padding: '24px 0', height: '95%' }}>
           <Sider className="site-layout-background" width={200}>
             <Menu
               mode="inline"
-              defaultSelectedKeys={['sub1']}
+              onSelect={(selected) => setSelectedMenu(selected.key)}
+              defaultSelectedKeys={['images']}
               style={{ height: '100%' }}
               items={sideBarOptions}
             />
           </Sider>
           <Content style={{ padding: '0 24px', minHeight: 280 }}>
-            <Space wrap style={{ marginBottom: '20px' }}>
-              <Button type="primary" onClick={() => setSelectedCity('Montevideo')}>Montevideo</Button>
-              <Button type="primary" onClick={() => setSelectedCity('Madrid')}>Madrid</Button>
-              <Button type="primary" onClick={() => setSelectedCity('Roma')}>Roma</Button>
-              <Button type="primary" onClick={() => setSelectedCity('Amsterdam')}>Amsterdam</Button>
-              <Button type="primary" onClick={() => setSelectedCity('Nueva York')}>Nueva York</Button>
-            </Space>
-            <CityInformation queryString={selectedCity} />
+            <CityInformation queryString={selectedCity} menuShowed={selectedMenu} />
           </Content>
         </Layout>
       </Content>

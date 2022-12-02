@@ -46,3 +46,8 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.ant-carousel .slick-list .slick-slide {
+  display: flex;
+  justify-content: center;
+}
