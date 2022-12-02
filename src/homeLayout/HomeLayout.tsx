@@ -6,7 +6,8 @@ import {
 } from "@ant-design/icons";
 import { AutoComplete, Input, MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu } from "antd";
-import { CityInformation, HotelInfo } from "../cityInformation/CityInformation";
+import { CityInformation } from "../cityInformation/CityInformation";
+import { HotelInfo } from "../hotelInfo/HotelInfo";
 
 const { Header, Content, Footer, Sider } = Layout;
 

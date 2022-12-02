@@ -46,3 +46,7 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.highlighted {
+  font-weight: 700;
+}
