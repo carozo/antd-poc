@@ -143,7 +143,6 @@ const HotelDetail = ({ currentHotelId }) => {
           height: "50%",
           width: "100%",
           display: "flex",
-          backgroundColor: "orange",
         }}
       >
         {image && (
