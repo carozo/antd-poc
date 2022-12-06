@@ -20,7 +20,7 @@ export const HotelInfo = ({ location }) => {
     };
 
     fetch(
-      "https://hotels4.p.rapidapi.com/locations/v2/search?query=new%20york&locale=en_US&currency=USD",
+      `https://hotels4.p.rapidapi.com/locations/v2/search?query=${parsedLocation}&locale=en_US&currency=USD`,
       options
     )
       .then((response) => response.json())

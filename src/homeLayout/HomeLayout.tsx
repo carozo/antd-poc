@@ -8,6 +8,7 @@ import { AutoComplete, Input, MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu } from "antd";
 import { CityInformation } from "../cityInformation/CityInformation";
 import { HotelInfo } from "../hotelInfo/HotelInfo";
+import { PlacesInfo } from "../placesInfo/PlacesInfo";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -73,7 +74,7 @@ export const HomeLayout: React.FC = () => {
           ) : selectedKey === "sub2" ? (
             <HotelInfo />
           ) : (
-            <></>
+            selectedKey === "sub3" && <PlacesInfo />
           )}
         </Layout>
       </Content>
