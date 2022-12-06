@@ -114,6 +114,7 @@ const HotelDetail = ({ currentHotelId }) => {
     body: `{"currency":"USD","eapid":1,"locale":"en_US","siteId":300000001,"propertyId":"${currentHotelId}"}`,
   };
   if (!hotelDetail) {
+    // if (false) {
     fetch("https://hotels4.p.rapidapi.com/properties/v2/detail", options)
       .then((response) => response.json())
       .then((response) => {
@@ -149,7 +150,7 @@ const HotelDetail = ({ currentHotelId }) => {
     >
       <div
         style={{
-          height: "50%",
+          height: 250,
           width: "100%",
           display: "flex",
         }}
@@ -166,28 +167,42 @@ const HotelDetail = ({ currentHotelId }) => {
             }}
           />
         )}
-        <h1
+        <div
           style={{
             position: "absolute",
-            fontSize: 50,
-            color: "white",
-            fontWeight: 300,
-            backgroundColor: "#00000066",
-            paddingLeft: 10,
           }}
         >
-          {hotelDetail?.summary?.name}
-        </h1>
+          <h2
+            style={{
+              marginBottom: 0,
+              marginTop: 30,
+              fontSize: 50,
+              color: "white",
+              fontWeight: 300,
+              backgroundColor: "#00000066",
+              paddingLeft: 10,
+              display: "inline-block",
+            }}
+          >
+            {hotelDetail?.summary?.name}
+          </h2>
+          <br></br>
+          <p
+            style={{
+              backgroundColor: "#e1edf7ee",
+              marginTop: 10,
+              color: "#303030",
+              display: "inline-block",
+              fontSize: 20,
+              fontWeight: 200,
+              paddingLeft: 10,
+            }}
+          >
+            {hotelDetail?.summary?.tagline}
+          </p>
+        </div>
       </div>
-      <div
-        style={{
-          height: 60,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <p>{hotelDetail?.summary?.tagline}</p>
-      </div>
+
       <div
         style={{
           flex: 1,
@@ -197,9 +212,9 @@ const HotelDetail = ({ currentHotelId }) => {
       >
         <div
           style={{
+            marginTop: 10,
             display: "flex",
             flex: 1,
-            padding: 10,
           }}
         >
           <div style={{ flexDirection: "column", flex: 1 }}>
@@ -240,6 +255,7 @@ const HotelDetail = ({ currentHotelId }) => {
               flexDirection: "column",
               flex: 1,
               justifyContent: "flex-end",
+              marginTop: 10,
             }}
           >
             <Carousel
@@ -247,7 +263,6 @@ const HotelDetail = ({ currentHotelId }) => {
               style={{
                 height: 200,
                 width: 600,
-                marginTop: 20,
                 marginRight: 20,
               }}
             >
