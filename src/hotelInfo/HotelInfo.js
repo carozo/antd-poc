@@ -1,16 +1,10 @@
-import { Card } from "antd";
+import { Card, Carousel, Rate } from "antd";
 import React from "react";
 import { useEffect } from "react";
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
-import {
-  NotificationOutlined,
-  HomeOutlined,
-  ArrowRightOutlined,
-} from "@ant-design/icons";
+import { ArrowRightOutlined } from "@ant-design/icons";
 
 export const HotelInfo = ({ location }) => {
   const parsedLocation = location ? location.replace(" ", "%20") : "new%20york";
-
   const [hotels, setHotels] = React.useState([]);
   const [showList, setShowList] = React.useState(true);
   const [currentHotelId, setCurrentHotelId] = React.useState(0);
@@ -95,6 +89,7 @@ export const HotelInfo = ({ location }) => {
 
 const HotelDetail = ({ currentHotelId }) => {
   const [image, setImage] = React.useState("");
+  const [starRating, setStarRating] = React.useState(undefined);
   const [hotelDetail, setHotelDetail] = React.useState(null);
   const [map, setMap] = React.useState();
   useEffect(() => {
@@ -126,16 +121,30 @@ const HotelDetail = ({ currentHotelId }) => {
         setImage(
           response.data.propertyInfo.propertyGallery.images[0].image.url
         );
+        console.log(
+          "hello",
+          parseInt(
+            response.data.propertyInfo?.reviewInfo?.summary
+              ?.overallScoreWithDescriptionA11y?.value[0]
+          ) / 2
+        );
+        setStarRating(
+          parseInt(
+            response.data.propertyInfo?.reviewInfo?.summary
+              ?.overallScoreWithDescriptionA11y?.value[0]
+          ) / 2
+        );
       })
       .catch((err) => console.error(err));
   }
-  console.log(hotelDetail, "detai", image);
+
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "column",
         width: "100%",
+        flex: 1,
       }}
     >
       <div
@@ -172,6 +181,15 @@ const HotelDetail = ({ currentHotelId }) => {
       </div>
       <div
         style={{
+          height: 60,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <p>{hotelDetail?.summary?.tagline}</p>
+      </div>
+      <div
+        style={{
           flex: 1,
           display: "flex",
           height: "100%",
@@ -181,27 +199,100 @@ const HotelDetail = ({ currentHotelId }) => {
           style={{
             display: "flex",
             flex: 1,
-            flexDirection: "column",
             padding: 10,
           }}
         >
-          <p style={{ paddingLeft: 20, paddingRight: 5 }}>
-            <strong>Location:</strong>{" "}
-            {hotelDetail?.summary?.location?.address?.addressLine}
-          </p>
-          {hotelDetail && (
-            <img
-              style={{ height: 200, width: 200, marginLeft: 20 }}
-              src={`https://maps.googleapis.com/maps/api/staticmap?center=${hotelDetail?.summary?.location?.address?.addressLine},CA&zoom=14&size=200x200&key=AIzaSyApRU593he8LkibAe81HpViVIbgFPyxV3g`}
-            />
-          )}
-          <p style={{ paddingLeft: 20, fontWeight: 500, paddingRight: 5 }}>
-            <strong>Score:</strong>{" "}
-            {
-              hotelDetail?.reviewInfo?.summary?.overallScoreWithDescriptionA11y
-                ?.value
-            }
-          </p>
+          <div style={{ flexDirection: "column", flex: 1 }}>
+            <p style={{ paddingLeft: 20, paddingRight: 5 }}>
+              <strong>Location:</strong>{" "}
+              {hotelDetail?.summary?.location?.address?.addressLine}
+            </p>
+            {hotelDetail && (
+              <img
+                style={{
+                  height: 150,
+                  width: 250,
+                  marginLeft: 20,
+                  marginBottom: 20,
+                }}
+                src={`https://maps.googleapis.com/maps/api/staticmap?center=${hotelDetail?.summary?.location?.address?.addressLine},CA&zoom=14&size=250x150&key=AIzaSyApRU593he8LkibAe81HpViVIbgFPyxV3g`}
+              />
+            )}
+          </div>
+          <div style={{ flexDirection: "column", flex: 1 }}>
+            <p style={{ paddingLeft: 20, fontWeight: 500, paddingRight: 5 }}>
+              <strong>Score:</strong>{" "}
+              {
+                hotelDetail?.reviewInfo?.summary
+                  ?.overallScoreWithDescriptionA11y?.value
+              }
+            </p>
+            {starRating && (
+              <Rate
+                disabled
+                defaultValue={starRating}
+                style={{ marginLeft: 20 }}
+              />
+            )}
+          </div>
+          <div
+            style={{
+              flexDirection: "column",
+              flex: 1,
+              justifyContent: "flex-end",
+            }}
+          >
+            <Carousel
+              autoplay
+              style={{
+                height: 200,
+                width: 600,
+                marginTop: 20,
+                marginRight: 20,
+              }}
+            >
+              {hotelDetail?.propertyGallery?.images[1]?.image.url && (
+                <div>
+                  <img
+                    src={hotelDetail?.propertyGallery?.images[1]?.image.url}
+                    style={{ objectFit: "cover", height: 200, width: "100%" }}
+                  />
+                </div>
+              )}
+              {hotelDetail?.propertyGallery?.images[2]?.image.url && (
+                <div>
+                  <img
+                    src={hotelDetail?.propertyGallery?.images[2]?.image.url}
+                    style={{ objectFit: "cover", height: 200, width: "100%" }}
+                  />
+                </div>
+              )}
+              {hotelDetail?.propertyGallery?.images[3]?.image.url && (
+                <div>
+                  <img
+                    src={hotelDetail?.propertyGallery?.images[3]?.image.url}
+                    style={{ objectFit: "cover", height: 200, width: "100%" }}
+                  />
+                </div>
+              )}
+              {hotelDetail?.propertyGallery?.images[4]?.image.url && (
+                <div>
+                  <img
+                    src={hotelDetail?.propertyGallery?.images[4]?.image.url}
+                    style={{ objectFit: "cover", height: 200, width: "100%" }}
+                  />
+                </div>
+              )}
+              {hotelDetail?.propertyGallery?.images[5]?.image.url && (
+                <div>
+                  <img
+                    src={hotelDetail?.propertyGallery?.images[5]?.image.url}
+                    style={{ objectFit: "cover", height: 200, width: "100%" }}
+                  />
+                </div>
+              )}
+            </Carousel>
+          </div>
         </div>
       </div>
     </div>
