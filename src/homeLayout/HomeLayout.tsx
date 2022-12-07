@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NotificationOutlined, EnvironmentOutlined, PictureOutlined, AntCloudOutlined } from '@ant-design/icons';
 import { AutoComplete, Button, Input, MenuProps, Space } from 'antd';
 import { Layout, Menu } from 'antd';
 import { CityInformation } from '../cityInformation/CityInformation';
+import cities from 'toppop-cities';
 
 const { Header, Content, Footer, Sider } = Layout;
+
 
 const sideBarOptions: MenuProps['items'] = [
   {
@@ -18,9 +20,9 @@ const sideBarOptions: MenuProps['items'] = [
     label: `Weather`,
   },
   {
-    key: `events`,
+    key: `news`,
     icon: React.createElement(NotificationOutlined),
-    label: `Events`,
+    label: `Related News`,
   },
   {
     key: `places`,
@@ -30,8 +32,26 @@ const sideBarOptions: MenuProps['items'] = [
 ];
 
 export const HomeLayout = () => {
-  const [selectedCity, setSelectedCity] = useState('Montevideo');
-  const [selectedMenu, setSelectedMenu] = useState('weather');
+  const [selectedCity, setSelectedCity] = useState('Manila');
+  const [selectedMenu, setSelectedMenu] = useState('images');
+  const [selectOptions, setSelectOptions] = useState([{ label: 'Montevideo', value: 'Montevideo' }]);
+
+  function getCities() {
+    setSelectOptions((cities as Array<any>).map((city) => {
+      return { 
+        value: city.name,
+        label: city.name,
+      }
+    }))
+  }
+
+  useEffect(() => {
+    getCities();
+  }, []);
+
+  useEffect(() => {
+    console.log(selectedCity, 'SELECTED');
+  }, [selectedCity]);
 
   return (
     <Layout style={{ height: '100vh' }}>
@@ -40,21 +60,15 @@ export const HomeLayout = () => {
         <AutoComplete
           dropdownMatchSelectWidth={252}
           style={{ width: 300 }}
-          options={[]} //Aca irian todas las ciudades disponibles, o ponemos todas?
-          onSelect={() => {}}
-          onSearch={(value) => setSelectedCity(value)}
+          options={selectOptions} //Aca irian todas las ciudades disponibles, o ponemos todas?
+          onSelect={(value) => setSelectedCity(value)}
+          onSearch={() => {}}
+          filterOption={true}
         >
           <Input.Search size="large" placeholder="input here" enterButton />
         </AutoComplete>    
       </Header>
       <Content style={{ padding: '0 30px' }}>
-        <Space wrap style={{ marginBottom: '20px' }}>
-          <Button type="primary" onClick={() => setSelectedCity('Montevideo')}>Montevideo</Button>
-          <Button type="primary" onClick={() => setSelectedCity('Madrid')}>Madrid</Button>
-          <Button type="primary" onClick={() => setSelectedCity('Roma')}>Roma</Button>
-          <Button type="primary" onClick={() => setSelectedCity('Amsterdam')}>Amsterdam</Button>
-          <Button type="primary" onClick={() => setSelectedCity('Nueva York')}>Nueva York</Button>
-        </Space>
         <Layout className="site-layout-background" style={{ padding: '24px 0', height: '95%' }}>
           <Sider className="site-layout-background" width={200}>
             <Menu

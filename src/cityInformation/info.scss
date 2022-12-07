@@ -1,0 +1,13 @@
+.news-content::-webkit-scrollbar {
+  width: 15px;               /* width of the entire scrollbar */
+}
+
+.news-content::-webkit-scrollbar-track {
+  background: rgb(255, 255, 255);        /* color of the tracking area */
+}
+
+.news-content::-webkit-scrollbar-thumb {
+  background-color: rgb(65, 65, 226);    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 3px solid rgb(255, 255, 255);  /* creates padding around scroll thumb */
+}
