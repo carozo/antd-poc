@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NotificationOutlined, EnvironmentOutlined, PictureOutlined, AntCloudOutlined } from '@ant-design/icons';
-import { AutoComplete, Button, Input, MenuProps, Space } from 'antd';
+import { AutoComplete, Input, MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
 import { CityInformation } from '../cityInformation/CityInformation';
 import cities from 'toppop-cities';
@@ -60,12 +60,12 @@ export const HomeLayout = () => {
         <AutoComplete
           dropdownMatchSelectWidth={252}
           style={{ width: 300 }}
-          options={selectOptions} //Aca irian todas las ciudades disponibles, o ponemos todas?
+          options={selectOptions}
           onSelect={(value) => setSelectedCity(value)}
           onSearch={() => {}}
           filterOption={true}
         >
-          <Input.Search size="large" placeholder="input here" enterButton />
+          <Input.Search size="large" placeholder="Search by city name" enterButton />
         </AutoComplete>    
       </Header>
       <Content style={{ padding: '0 30px' }}>
