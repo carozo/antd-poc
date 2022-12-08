@@ -78,6 +78,7 @@ export const PlacesInfo = ({ location = "Montevideo" }) => {
 
 const RenderPlace = ({ place }) => {
   const [placeInfo, setPlaceInfo] = useState({});
+  const [image, setImage] = useState(undefined);
   const options = {
     method: "GET",
     headers: {
@@ -85,8 +86,11 @@ const RenderPlace = ({ place }) => {
       "X-RapidAPI-Host": "opentripmap-places-v1.p.rapidapi.com",
     },
   };
-
+  const optionsImage = {
+    method: "GET",
+  };
   const getPlaceDetails = async () => {
+    const parsedLocation = place?.properties?.name?.replace(" ", "%20");
     fetch(
       `https://opentripmap-places-v1.p.rapidapi.com/en/places/xid/${place?.properties?.xid}`,
       options
@@ -113,8 +117,8 @@ const RenderPlace = ({ place }) => {
           style={{ margin: 20 }}
           key={place.id}
         >
-          {placeInfo?.image ? (
-            <img src={placeInfo.image} style={{ height: 30 }} />
+          {image ? (
+            <img src={image} style={{ height: 30 }} />
           ) : (
             place?.geometry?.coordinates && (
               <img
@@ -138,10 +142,11 @@ const RenderPlace = ({ place }) => {
             <a
               href={placeInfo?.url}
               style={{
-                flexDirection: "row",
+                flexDirection: "column",
                 display: "flex",
               }}
             >
+              <p>Visit webpage</p>
               <div style={{ marginTop: "10px", flex: 1 }}>
                 {React.createElement(ArrowRightOutlined)}
               </div>
