@@ -1,4 +1,4 @@
-import { Card, Carousel, Rate } from "antd";
+import { Card, Carousel, Rate, Row, Col } from "antd";
 import React from "react";
 import { useEffect } from "react";
 import { ArrowRightOutlined } from "@ant-design/icons";
@@ -44,27 +44,35 @@ export const HotelInfo = ({ location }) => {
               marginTop: "10px",
             }}
           >
-            {hotels.map((hotel) => (
-              <Card title={hotel.name} style={{ margin: 20 }} key={hotel.geoId}>
-                <div
-                  onClick={() => {
-                    setShowList(false);
-                    setCurrentHotelId(hotel.geoId);
-                  }}
-                  style={{
-                    flexDirection: "row",
-                    display: "flex",
-                  }}
-                >
-                  <div
-                    dangerouslySetInnerHTML={{ __html: hotel.caption }}
-                  ></div>
-                  <div style={{ marginTop: "10px", flex: 1 }}>
-                    {React.createElement(ArrowRightOutlined)}
-                  </div>
-                </div>
-              </Card>
-            ))}
+            <Row gutter={[16, 24]}>
+              {hotels.map((hotel) => (
+                <Col className="gutter-row" span={6}>
+                  <Card
+                    title={hotel.name}
+                    style={{ margin: 20 }}
+                    key={hotel.geoId}
+                  >
+                    <div
+                      onClick={() => {
+                        setShowList(false);
+                        setCurrentHotelId(hotel.geoId);
+                      }}
+                      style={{
+                        flexDirection: "row",
+                        display: "flex",
+                      }}
+                    >
+                      <div
+                        dangerouslySetInnerHTML={{ __html: hotel.caption }}
+                      ></div>
+                      <div style={{ marginTop: "10px", flex: 1 }}>
+                        {React.createElement(ArrowRightOutlined)}
+                      </div>
+                    </div>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
           </div>
         </div>
       ) : (
