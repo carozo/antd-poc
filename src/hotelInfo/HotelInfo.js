@@ -1,10 +1,11 @@
-import { Card, Carousel, Rate, Row, Col } from "antd";
+import { Card, Carousel, Rate, Row, Col, Spin } from "antd";
 import React from "react";
 import { useEffect } from "react";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
 export const HotelInfo = ({ location }) => {
   const parsedLocation = location ? location.replace(" ", "%20") : "new%20york";
+  const [loading, setLoading] = React.useState(true);
   const [hotels, setHotels] = React.useState([]);
   const [showList, setShowList] = React.useState(true);
   const [currentHotelId, setCurrentHotelId] = React.useState(0);
@@ -26,6 +27,7 @@ export const HotelInfo = ({ location }) => {
       .then((response) => response.json())
       .then((response) => {
         setHotels(response.suggestions[1].entities);
+        setLoading(false);
       })
       .catch((err) => console.error(err));
   };
@@ -34,68 +36,87 @@ export const HotelInfo = ({ location }) => {
   }, []);
   return (
     <>
-      {showList ? (
-        <div style={{ width: "100%" }}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-around",
-              marginTop: "10px",
-            }}
-          >
-            <Row gutter={[16, 24]}>
-              {hotels.map((hotel) => (
-                <Col className="gutter-row" span={6}>
-                  <Card
-                    title={hotel.name}
-                    style={{ margin: 20 }}
-                    key={hotel.geoId}
-                  >
-                    <div
-                      onClick={() => {
-                        setShowList(false);
-                        setCurrentHotelId(hotel.geoId);
-                      }}
-                      style={{
-                        flexDirection: "row",
-                        display: "flex",
-                      }}
-                    >
-                      <div
-                        dangerouslySetInnerHTML={{ __html: hotel.caption }}
-                      ></div>
-                      <div style={{ marginTop: "10px", flex: 1 }}>
-                        {React.createElement(ArrowRightOutlined)}
-                      </div>
-                    </div>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          </div>
-        </div>
-      ) : (
-        <div
-          style={{
-            backgroundColor: "white",
-            display: "flex",
-            flex: 1,
-            marginLeft: 30,
-            borderRadius: 5,
-          }}
-        >
-          <HotelDetail currentHotelId={currentHotelId} />
-        </div>
+      {loading && (
+        <Spin
+          size={"large"}
+          style={{ position: "absolute", top: "50%", right: "50%" }}
+        />
+      )}
+      {!loading && (
+        <>
+          {showList ? (
+            <div style={{ width: "100%" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  marginTop: "10px",
+                }}
+              >
+                <Row gutter={[16, 24]}>
+                  {hotels.map((hotel) => (
+                    <Col className="gutter-row" span={6}>
+                      <Card
+                        title={hotel.name}
+                        style={{ margin: 20 }}
+                        key={hotel.geoId}
+                      >
+                        <div
+                          onClick={() => {
+                            setShowList(false);
+                            setCurrentHotelId(hotel.geoId);
+                            setLoading(true);
+                          }}
+                          style={{
+                            flexDirection: "row",
+                            display: "flex",
+                          }}
+                        >
+                          <div
+                            dangerouslySetInnerHTML={{ __html: hotel.caption }}
+                          ></div>
+                          <div style={{ marginTop: "10px", flex: 1 }}>
+                            {React.createElement(ArrowRightOutlined)}
+                          </div>
+                        </div>
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
+              </div>
+            </div>
+          ) : (
+            <div
+              style={{
+                backgroundColor: "white",
+                display: "flex",
+                flex: 1,
+                marginLeft: 30,
+                borderRadius: 5,
+              }}
+            >
+              <HotelDetail
+                currentHotelId={currentHotelId}
+                setLoading={setLoading}
+              />
+            </div>
+          )}
+        </>
       )}
     </>
   );
 };
 
-const HotelDetail = ({ currentHotelId }) => {
+const HotelDetail = ({ currentHotelId, setLoading }) => {
+  const [hotelDetail, setHotelDetail] = React.useState(null);
+  useEffect(() => {
+    if (hotelDetail) {
+      setLoading(false);
+    }
+  }, [hotelDetail, setLoading]);
   const [image, setImage] = React.useState("");
   const [starRating, setStarRating] = React.useState(undefined);
-  const [hotelDetail, setHotelDetail] = React.useState(null);
 
   const options = {
     method: "POST",

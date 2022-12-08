@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card } from "antd";
+import { Card, Spin } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { Col, Row } from "antd";
 
@@ -7,7 +7,7 @@ export const PlacesInfo = ({ location = "Montevideo" }) => {
   const parsedLocation = location ? location.replace(" ", "%20") : "new%20york";
   const [lon, setLon] = useState(0);
   const [lat, setLat] = useState(0);
-  const [places, setPlaces] = useState([]);
+  const [places, setPlaces] = useState(undefined);
   //podemos obtener la population de este endpoint si queremos
   const getCoordinates = async () => {
     const options = {
@@ -58,22 +58,29 @@ export const PlacesInfo = ({ location = "Montevideo" }) => {
 
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          marginTop: "10px",
-        }}
-      >
-        <Row gutter={[16, 24]}>
-          {places?.map((place) => (
-            <Col className="gutter-row" span={6}>
-              <RenderPlace place={place} />
-            </Col>
-          ))}
-        </Row>
-      </div>
+      {places ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginTop: "10px",
+          }}
+        >
+          <Row gutter={[16, 24]}>
+            {places?.map((place) => (
+              <Col className="gutter-row" span={6}>
+                <RenderPlace place={place} />
+              </Col>
+            ))}
+          </Row>
+        </div>
+      ) : (
+        <Spin
+          size={"large"}
+          style={{ position: "absolute", top: "50%", right: "50%" }}
+        />
+      )}
     </div>
   );
 };
