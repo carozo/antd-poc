@@ -34,81 +34,79 @@ export const HotelInfo = ({ location }) => {
   useEffect(() => {
     getHotels();
   }, []);
+  console.log(showList);
+
   return (
     <>
       {loading && (
-        <Spin
-          size={"large"}
-          style={{ position: "absolute", top: "50%", right: "50%" }}
-        />
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Spin size="large" />
+        </div>
       )}
-      {!loading && (
-        <>
-          {showList ? (
-            <div style={{ width: "100%" }}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  marginTop: "10px",
-                }}
-              >
-                <Row gutter={[16, 24]}>
-                  {hotels.map((hotel) => (
-                    <Col className="gutter-row" span={6}>
-                      <Card
-                        title={hotel.name}
-                        style={{ margin: 20 }}
-                        key={hotel.geoId}
-                      >
-                        <div
-                          onClick={() => {
-                            setShowList(false);
-                            setCurrentHotelId(hotel.geoId);
-                            setLoading(true);
-                          }}
-                          style={{
-                            flexDirection: "row",
-                            display: "flex",
-                          }}
-                        >
-                          <div
-                            dangerouslySetInnerHTML={{ __html: hotel.caption }}
-                          ></div>
-                          <div style={{ marginTop: "10px", flex: 1 }}>
-                            {React.createElement(ArrowRightOutlined)}
-                          </div>
-                        </div>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
-              </div>
-            </div>
-          ) : (
-            <div
-              style={{
-                backgroundColor: "white",
-                display: "flex",
-                flex: 1,
-                marginLeft: 30,
-                borderRadius: 5,
-              }}
-            >
-              <HotelDetail
-                currentHotelId={currentHotelId}
-                setLoading={setLoading}
-              />
-            </div>
-          )}
-        </>
+      {showList ? (
+        <div style={{ width: "100%" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginTop: "10px",
+            }}
+          >
+            <Row gutter={[16, 24]}>
+              {hotels.map((hotel) => (
+                <Col className="gutter-row" span={6}>
+                  <Card
+                    title={hotel.name}
+                    style={{ margin: 20 }}
+                    key={hotel.geoId}
+                  >
+                    <div
+                      onClick={() => {
+                        setShowList(false);
+                        setCurrentHotelId(hotel.geoId);
+                        setLoading(true);
+                      }}
+                      style={{
+                        flexDirection: "row",
+                        display: "flex",
+                      }}
+                    >
+                      <div
+                        dangerouslySetInnerHTML={{ __html: hotel.caption }}
+                      ></div>
+                      <div style={{ marginTop: "10px", flex: 1 }}>
+                        {React.createElement(ArrowRightOutlined)}
+                      </div>
+                    </div>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </div>
+        </div>
+      ) : (
+        <div
+          style={{
+            backgroundColor: "white",
+            display: "flex",
+            flex: 1,
+            marginLeft: 30,
+            borderRadius: 5,
+          }}
+        >
+          <HotelDetail
+            currentHotelId={currentHotelId}
+            setLoading={setLoading}
+          />
+        </div>
       )}
     </>
   );
 };
 
 const HotelDetail = ({ currentHotelId, setLoading }) => {
+  console.log("hi");
   const [hotelDetail, setHotelDetail] = React.useState(null);
   useEffect(() => {
     if (hotelDetail) {
@@ -127,31 +125,36 @@ const HotelDetail = ({ currentHotelId, setLoading }) => {
     },
     body: `{"currency":"USD","eapid":1,"locale":"en_US","siteId":300000001,"propertyId":"${currentHotelId}"}`,
   };
-  if (!hotelDetail) {
-    // if (false) {
-    fetch("https://hotels4.p.rapidapi.com/properties/v2/detail", options)
-      .then((response) => response.json())
-      .then((response) => {
-        setHotelDetail(response.data.propertyInfo);
-        setImage(
-          response.data.propertyInfo.propertyGallery.images[0].image.url
-        );
-        console.log(
-          "hello",
-          parseInt(
-            response.data.propertyInfo?.reviewInfo?.summary
-              ?.overallScoreWithDescriptionA11y?.value[0]
-          ) / 2
-        );
-        setStarRating(
-          parseInt(
-            response.data.propertyInfo?.reviewInfo?.summary
-              ?.overallScoreWithDescriptionA11y?.value[0]
-          ) / 2
-        );
-      })
-      .catch((err) => console.error(err));
-  }
+  const getHotelDetail = async () => {
+    console.log("Aca");
+    if (!hotelDetail) {
+      fetch("https://hotels4.p.rapidapi.com/properties/v2/detail", options)
+        .then((response) => response.json())
+        .then((response) => {
+          setHotelDetail(response.data.propertyInfo);
+          setImage(
+            response.data.propertyInfo.propertyGallery.images[0].image.url
+          );
+          console.log(
+            "hello",
+            parseInt(
+              response.data.propertyInfo?.reviewInfo?.summary
+                ?.overallScoreWithDescriptionA11y?.value[0]
+            ) / 2
+          );
+          setStarRating(
+            parseInt(
+              response.data.propertyInfo?.reviewInfo?.summary
+                ?.overallScoreWithDescriptionA11y?.value[0]
+            ) / 2
+          );
+        })
+        .catch((err) => console.error(err));
+    }
+  };
+  useEffect(() => {
+    getHotelDetail();
+  }, []);
 
   return (
     <div
@@ -232,10 +235,12 @@ const HotelDetail = ({ currentHotelId, setLoading }) => {
           }}
         >
           <div style={{ flexDirection: "column", flex: 1 }}>
-            <p style={{ paddingLeft: 20, paddingRight: 5 }}>
-              <strong>Location:</strong>{" "}
-              {hotelDetail?.summary?.location?.address?.addressLine}
-            </p>
+            {hotelDetail && (
+              <p style={{ paddingLeft: 20, paddingRight: 5 }}>
+                <strong>Location:</strong>{" "}
+                {hotelDetail?.summary?.location?.address?.addressLine}
+              </p>
+            )}
             {hotelDetail && (
               <img
                 style={{
@@ -244,18 +249,20 @@ const HotelDetail = ({ currentHotelId, setLoading }) => {
                   marginLeft: 20,
                   marginBottom: 20,
                 }}
-                src={`https://maps.googleapis.com/maps/api/staticmap?center=${hotelDetail?.summary?.location?.address?.addressLine},CA&zoom=14&size=250x150&key=AIzaSyApRU593he8LkibAe81HpViVIbgFPyxV3g`}
+                src={`https://maps.googleapis.com/maps/api/staticmap?center=${hotelDetail?.summary?.location?.address?.addressLine},CA&zoom=14&size=250x150&key=`}
               />
             )}
           </div>
           <div style={{ flexDirection: "column", flex: 1 }}>
-            <p style={{ paddingLeft: 20, fontWeight: 500, paddingRight: 5 }}>
-              <strong>Score:</strong>{" "}
-              {
-                hotelDetail?.reviewInfo?.summary
-                  ?.overallScoreWithDescriptionA11y?.value
-              }
-            </p>
+            {hotelDetail && (
+              <p style={{ paddingLeft: 20, fontWeight: 500, paddingRight: 5 }}>
+                <strong>Score:</strong>{" "}
+                {
+                  hotelDetail?.reviewInfo?.summary
+                    ?.overallScoreWithDescriptionA11y?.value
+                }
+              </p>
+            )}
             {starRating && (
               <Rate
                 disabled

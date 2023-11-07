@@ -72,7 +72,9 @@ export const CityNews = (props) => {
               >
                 <p>Date: {article.date}</p>
                 <img style={imgStyle} src={article.image} alt={article.title} />
-                <p>{article.description}</p>
+                <div
+                  dangerouslySetInnerHTML={{ __html: article.description }}
+                ></div>
                 <p>Author: {article.author ? article.author : "unknown"}</p>
                 <a href={article.link}>{article.link.split("/")[2]}</a>
               </Card>

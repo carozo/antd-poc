@@ -111,13 +111,7 @@ const RenderPlace = ({ place }) => {
   useEffect(() => {
     getPlaceDetails();
   }, []);
-  //   console.log(
-  //     `https://maps.googleapis.com/maps/api/staticmap?center=${place?.geometry?.coordinates
-  //       ?.reverse()
-  //       .join(
-  //         ","
-  //       )}&zoom=14&size=150x150&key=AIzaSyApRU593he8LkibAe81HpViVIbgFPyxV3g`
-  //   );
+
   return (
     <>
       <Card
@@ -140,19 +134,19 @@ const RenderPlace = ({ place }) => {
                 ...place?.geometry?.coordinates,
               ]
                 ?.reverse()
-                .join(
-                  ","
-                )}&zoom=14&size=150x150&key=AIzaSyApRU593he8LkibAe81HpViVIbgFPyxV3g`}
+                .join(",")}&zoom=14&size=150x150&key=`}
             />
           )
         )}
         {placeInfo?.url && (
           <a
+            target={"_blank"}
             href={placeInfo?.url}
             style={{
               flexDirection: "column",
               display: "flex",
             }}
+            rel="noreferrer"
           >
             <p>Visit webpage</p>
             <div style={{ marginTop: "10px", flex: 1 }}>

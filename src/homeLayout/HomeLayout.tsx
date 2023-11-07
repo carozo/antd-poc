@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   NotificationOutlined,
-  EnvironmentOutlined,
   PictureOutlined,
   CloudOutlined,
   HomeOutlined,
@@ -72,20 +71,22 @@ export const HomeLayout = () => {
     <Layout style={{ height: "100vh" }}>
       <Header className="header">
         Cities
-        <AutoComplete
+        {/* <AutoComplete
           dropdownMatchSelectWidth={252}
           style={{ width: 300 }}
           options={selectOptions}
           onSelect={(value) => setSelectedCity(value)}
           onSearch={() => {}}
           filterOption={true}
-        >
+        > */}
           <Input.Search
+          style={{ width: 300 }}
             size="large"
             placeholder="Search by city name"
             enterButton
+            onPressEnter={(e) => setSelectedCity(e.currentTarget.value)}
           />
-        </AutoComplete>
+        {/* </AutoComplete> */}
       </Header>
       <Content style={{ padding: "0 30px" }}>
         <Layout
@@ -109,9 +110,7 @@ export const HomeLayout = () => {
           </Content>
         </Layout>
       </Content>
-      <Footer style={{ textAlign: "center" }}>©2022 Created by BCS</Footer>
+      {/* <Footer style={{ textAlign: "center" }}>©2023 Created by BCS</Footer> */}
     </Layout>
   );
 };
-
-export default HomeLayout;
